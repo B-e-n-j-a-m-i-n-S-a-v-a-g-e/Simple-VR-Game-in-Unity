@@ -4,30 +4,53 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-	public float speed = 6.5f;
+	public float maxSpeed = 6.5f;
 	public float jumpingForce = 300f;
 	public float jumpingCoolDown = 1.5f;
 	public float jumpingTimer = 0f;
+	public float acceleration = 1.0f;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+	public GameObject startText;
+
+	private bool levelBegin = false;
+
+	private float speed = 0.0f;
+
 	
 	// Update is called once per frame
 	void Update () {
 
-		// Move player forward
-		transform.position += speed * Vector3.forward * Time.deltaTime;
+		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetKeyDown ("space")) {
+			levelBegin = true;
+			startText.SetActive (false);
+		}
 
-		jumpingTimer -= Time.deltaTime;
+		if (levelBegin) {
 
-		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetKeyDown("space")) {
-			if (jumpingTimer <= 0.0f) {
-				jumpingTimer = jumpingCoolDown;
-				GetComponent<Rigidbody>().AddForce(Vector3.up * jumpingForce);
+			speed += acceleration * Time.deltaTime;
+
+			if (speed > maxSpeed) {
+				speed = maxSpeed;
 			}
+			// Move player forward
 
+			transform.position += speed * Vector3.forward * Time.deltaTime;
+
+			jumpingTimer -= Time.deltaTime;
+
+			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetKeyDown ("space") && levelBegin) {
+				if (jumpingTimer <= 0.0f) {
+					jumpingTimer = jumpingCoolDown;
+					GetComponent<Rigidbody> ().AddForce (Vector3.up * jumpingForce);
+				}
+
+			}
+		}
+	}
+
+	void OnTriggerEnter(Collider collider) {
+		if (collider.tag == "Obstacle") {
+			speed *= 0.5f;
 		}
 	}
 }
