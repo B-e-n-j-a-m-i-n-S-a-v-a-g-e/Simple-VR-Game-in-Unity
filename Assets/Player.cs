@@ -43,7 +43,6 @@ public class Player : MonoBehaviour {
 					jumpingTimer = jumpingCoolDown;
 					GetComponent<Rigidbody> ().AddForce (Vector3.up * jumpingForce);
 				}
-
 			}
 		}
 	}
@@ -51,6 +50,10 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter(Collider collider) {
 		if (collider.tag == "Obstacle") {
 			speed *= 0.5f;
+		} else if (collider.tag == "FinishLine") {
+			levelBegin = false;
+			transform.position = Vector3.zero;
 		}
 	}
+		
 }
