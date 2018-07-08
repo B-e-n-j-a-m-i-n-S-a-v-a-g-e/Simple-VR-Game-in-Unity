@@ -12,12 +12,10 @@ public class Player : MonoBehaviour {
 
 	public GameObject startText;
 
-	private bool levelBegin = false;
+	public bool levelBegin = false;
 
 	private float speed = 0.0f;
 
-	
-	// Update is called once per frame
 	void Update () {
 
 		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetKeyDown ("space")) {
@@ -32,7 +30,6 @@ public class Player : MonoBehaviour {
 			if (speed > maxSpeed) {
 				speed = maxSpeed;
 			}
-			// Move player forward
 
 			transform.position += speed * Vector3.forward * Time.deltaTime;
 
@@ -53,7 +50,7 @@ public class Player : MonoBehaviour {
 		} else if (collider.tag == "FinishLine") {
 			levelBegin = false;
 			transform.position = Vector3.zero;
+			startText.SetActive (true);
 		}
 	}
-		
 }
