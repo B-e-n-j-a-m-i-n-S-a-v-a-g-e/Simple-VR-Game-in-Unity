@@ -31,7 +31,7 @@ public class Player : MonoBehaviour {
 				speed = maxSpeed;
 			}
 
-			transform.position += speed * Vector3.forward * Time.deltaTime;
+			transform.position += transform.forward * speed * Time.deltaTime;
 
 			jumpingTimer -= Time.deltaTime;
 
